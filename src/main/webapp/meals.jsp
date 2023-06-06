@@ -3,11 +3,8 @@
 <%@ page import="ru.javawebinar.topjava.util.MealsUtil" %>
 <%@ page import="ru.javawebinar.topjava.model.MealTo" %>
 <%@ page import="java.time.LocalTime" %>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
-
 <html lang="ru">
-
 <head>
     <style>
         table {
@@ -30,14 +27,9 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-
 <%
-    List<Meal> listMeal = MealsUtil.getSimpleListMeal();
-    List<MealTo> listMealTo = MealsUtil.filteredByStreams(listMeal, LocalTime.of(0,0,0), LocalTime.of(23,59,59), 2000);
-    request.setAttribute("listMealTo", listMealTo);
-    System.out.println(listMealTo);
+    request.getAttribute("listMealTo");
 %>
-
 <table>
     <tr>
         <th>Date</th>
@@ -49,14 +41,12 @@
     <c:forEach var="meal" items="${listMealTo}">
         <tr style="color:${meal.exceed ? 'red' : 'green'}">
             <td><javatime:format value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm" /></td>
-            <td><c:out value="${meal.description}"/></td>
-            <td><c:out value="${meal.calories}"/></td>
+            <td>${meal.description}</td>
+            <td>${meal.calories}</td>
             <td>Update</td>
             <td>Delete</td>
         </tr>
     </c:forEach>
-
 </table>
-
 </body>
 </html>
