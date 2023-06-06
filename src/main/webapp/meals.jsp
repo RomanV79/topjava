@@ -23,7 +23,7 @@
 <hr>
 <h2>Meals</h2>
 <div style="margin-bottom: 20px">
-    <a href="add-meal">Add meal</a>
+    <a href="control?action=add">Add meal</a>
 </div>
 <table>
     <tr>
@@ -38,8 +38,8 @@
             <td><javatime:format value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm" /></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td>Update</td>
-            <td>Delete</td>
+            <td><a href="control?action=update&id=${meal.id}">Update</a></td>
+            <td><a href="control?action=delete&id=${meal.id}">Delete</a></td>
         </tr>
     </c:forEach>
 </table>

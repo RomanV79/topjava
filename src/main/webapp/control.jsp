@@ -6,7 +6,7 @@
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>Add meal</h2>
+<h2>${action.equals("add") ? 'Add' : 'Update'} meal</h2>
 <form method="post">
     <p>
         <label for="date">Date and time</label>

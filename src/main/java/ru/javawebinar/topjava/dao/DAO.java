@@ -11,5 +11,5 @@ public interface DAO<T> {
     public void update(T t);
 
     //delete
-    public void delete(T t);
+    public void delete(Integer id);
 }

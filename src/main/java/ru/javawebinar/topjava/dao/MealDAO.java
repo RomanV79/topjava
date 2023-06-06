@@ -20,7 +20,7 @@ public class MealDAO implements DAO<Meal>{
     }
 
     @Override
-    public void delete(Meal meal) {
-        MealsUtil.mapMealDB.remove(meal.getId());
+    public void delete(Integer id) {
+        MealsUtil.mapMealDB.remove(id);
     }
 }

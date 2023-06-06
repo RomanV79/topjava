@@ -31,6 +31,10 @@ public class MealTo {
                 '}';
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public LocalDateTime getDateTime() {
         return dateTime;
     }
