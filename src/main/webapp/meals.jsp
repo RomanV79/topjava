@@ -22,6 +22,9 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
+<div style="margin-bottom: 20px">
+    <a href="add-meal">Add meal</a>
+</div>
 <table>
     <tr>
         <th>Date</th>

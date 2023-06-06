@@ -23,7 +23,7 @@ public class MealsUtil {
         Meal meal4 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100);
         Meal meal5 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000);
         Meal meal6 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500);
-        Meal meal7 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 600);
+        Meal meal7 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 700);
         mapMealDB.put(meal1.getId(), meal1);
         mapMealDB.put(meal2.getId(), meal2);
         mapMealDB.put(meal3.getId(), meal3);
@@ -75,4 +75,6 @@ public class MealsUtil {
                 new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 600)
         );
     }
+
+
 }
