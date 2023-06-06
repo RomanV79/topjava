@@ -10,9 +10,28 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class MealsUtil {
+
+    public static final Map<Integer, Meal> mapMealDB = new ConcurrentHashMap();
+    static {
+        Meal meal1= new  Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
+        Meal meal2 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000);
+        Meal meal3 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500);
+        Meal meal4 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100);
+        Meal meal5 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000);
+        Meal meal6 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500);
+        Meal meal7 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 600);
+        mapMealDB.put(meal1.getId(), meal1);
+        mapMealDB.put(meal2.getId(), meal2);
+        mapMealDB.put(meal3.getId(), meal3);
+        mapMealDB.put(meal4.getId(), meal4);
+        mapMealDB.put(meal5.getId(), meal5);
+        mapMealDB.put(meal6.getId(), meal6);
+        mapMealDB.put(meal7.getId(), meal7);
+    }
     public static void main(String[] args) {
         List<Meal> meals = Arrays.asList(
                 new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
