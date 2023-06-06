@@ -14,12 +14,14 @@ import java.util.List;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
+    private static final int CALORIES_PER_DAY_LIMIT = 2000;
     private static final Logger log = getLogger(MealServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("redirect to meals");
-        List<MealTo> listMealTo = MealsUtil.filteredByStreams(MealsUtil.getSimpleListMeal(), LocalTime.MIN, LocalTime.MAX, 2000);
+        List<MealTo> listMealTo = MealsUtil.filteredByStreams(MealsUtil.getSimpleListMeal(), LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY_LIMIT);
+
         getServletContext().setAttribute("listMealTo", listMealTo);
         resp.sendRedirect("meals.jsp");
     }

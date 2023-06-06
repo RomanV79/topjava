@@ -1,9 +1,7 @@
-<%@ page import="ru.javawebinar.topjava.model.Meal" %>
-<%@ page import="java.util.List" %>
-<%@ page import="ru.javawebinar.topjava.util.MealsUtil" %>
-<%@ page import="ru.javawebinar.topjava.model.MealTo" %>
-<%@ page import="java.time.LocalTime" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="ru">
 <head>
     <style>
@@ -19,17 +17,11 @@
         }
     </style>
     <title>Meals</title>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
-    <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<%
-    request.getAttribute("listMealTo");
-%>
 <table>
     <tr>
         <th>Date</th>
@@ -39,7 +31,7 @@
         <th></th>
     </tr>
     <c:forEach var="meal" items="${listMealTo}">
-        <tr style="color:${meal.exceed ? 'red' : 'green'}">
+        <tr style="color:${meal.excess ? 'red' : 'green'}">
             <td><javatime:format value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm" /></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
