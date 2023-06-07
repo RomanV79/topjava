@@ -48,7 +48,7 @@ public class MealDao implements DAO<Meal>{
 
     @Override
     public Meal update(Meal meal) {
-        mapMealDB.put(meal.getId(), meal);
+        if (mapMealDB.containsKey(meal.getId())) mapMealDB.put(meal.getId(), meal);
         return meal;
     }
 
