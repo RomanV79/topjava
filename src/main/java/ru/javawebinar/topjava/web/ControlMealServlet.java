@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.dao.MealDAO;
+import ru.javawebinar.topjava.dao.MealDao;
 import ru.javawebinar.topjava.model.Meal;
 
 import javax.servlet.ServletException;
@@ -15,15 +15,15 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class ControlMealServlet extends HttpServlet {
 
-    private static final Logger log = getLogger(UserServlet.class);
-    private final MealDAO mealDAO = new MealDAO();
+    private static final Logger log = getLogger(ControlMealServlet.class);
+    private final MealDao mealDao = new MealDao();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("redirect to add-meal");
         String action = req.getParameter("action");
 
         if (action.equalsIgnoreCase("delete")) {
-            mealDAO.delete(Integer.parseInt(req.getParameter("id")));
+            mealDao.delete(Integer.parseInt(req.getParameter("id")));
             resp.sendRedirect("meals");
         }
         if (action.equalsIgnoreCase("add")) {
@@ -32,9 +32,9 @@ public class ControlMealServlet extends HttpServlet {
         }
         if (action.equalsIgnoreCase("update")) {
             req.setAttribute("action", action);
+            req.setAttribute("meal", mealDao.getById(Integer.parseInt(req.getParameter("id"))));
             req.getRequestDispatcher("control.jsp").forward(req, resp);
         }
-
     }
 
     @Override
@@ -48,11 +48,13 @@ public class ControlMealServlet extends HttpServlet {
 
         if (action.equalsIgnoreCase("add")) {
             Meal meal = new Meal(LocalDateTime.parse(date), description, Integer.parseInt(calories));
-            mealDAO.save(meal);
+            mealDao.create(meal);
         }
         if (action.equalsIgnoreCase("update")) {
             String id = req.getParameter("id");
-            mealDAO.update(new Meal(Integer.parseInt(id), LocalDateTime.parse(date), description, Integer.parseInt(calories)));
+            Meal meal = new Meal(LocalDateTime.parse(date), description, Integer.parseInt(calories));
+            meal.setId(Integer.parseInt(id));
+            mealDao.update(meal);
         }
 
         resp.sendRedirect("meals");
