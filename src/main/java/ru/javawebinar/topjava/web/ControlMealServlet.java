@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -32,7 +33,12 @@ public class ControlMealServlet extends HttpServlet {
         }
         if (action.equalsIgnoreCase("update")) {
             req.setAttribute("action", action);
-            req.setAttribute("meal", mealDao.getById(Integer.parseInt(req.getParameter("id"))));
+            Optional<Meal> mealOptional = mealDao.getById(Integer.parseInt(req.getParameter("id")));
+            if (mealOptional.isPresent()) {
+                req.setAttribute("meal", mealOptional.get());
+            } else {
+                req.setAttribute("meal", null);
+            }
             req.getRequestDispatcher("control.jsp").forward(req, resp);
         }
     }

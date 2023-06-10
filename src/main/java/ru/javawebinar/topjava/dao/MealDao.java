@@ -7,6 +7,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -40,8 +41,8 @@ public class MealDao implements Dao<Meal> {
     }
 
     @Override
-    public Meal getById(Integer id) {
-        return mapMealDB.get(id);
+    public Optional<Meal> getById(Integer id) {
+        return Optional.ofNullable(mapMealDB.get(id));
     }
 
     @Override
