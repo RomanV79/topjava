@@ -24,7 +24,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("redirect to meals");
-        List<Meal> listMeal = new ArrayList<Meal>(mealDao.mapMealDB.values());
+        List<Meal> listMeal = mealDao.getAll();
         List<MealTo> listMealTo = MealsUtil.filteredByStreams(listMeal, LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY_LIMIT);
         req.setAttribute("listMealTo", listMealTo);
         req.getRequestDispatcher("meals.jsp").forward(req, resp);

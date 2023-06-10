@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MealDao implements DAO<Meal>{
-    public static final Map<Integer, Meal> mapMealDB = new ConcurrentHashMap();
+public class MealDao implements Dao<Meal> {
+    private static final Map<Integer, Meal> mapMealDB = new ConcurrentHashMap();
     static {
         MealDao mealDao = new MealDao();
         Meal meal1= new  Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
