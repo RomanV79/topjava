@@ -8,9 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealDao implements Dao<Meal> {
     private static final Map<Integer, Meal> mapMealDB = new ConcurrentHashMap();
+    private static AtomicInteger count = new AtomicInteger();
+
     static {
         MealDao mealDao = new MealDao();
         Meal meal1= new  Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
@@ -30,7 +33,7 @@ public class MealDao implements Dao<Meal> {
     }
     @Override
     public Meal create(Meal meal) {
-        Integer id = CountHolder.getCount();
+        int id = getCount();
         mapMealDB.put(id, meal);
         meal.setId(id);
         return meal;
@@ -48,12 +51,17 @@ public class MealDao implements Dao<Meal> {
 
     @Override
     public Meal update(Meal meal) {
-        if (mapMealDB.containsKey(meal.getId())) mapMealDB.put(meal.getId(), meal);
+        if (mapMealDB.containsKey(meal.getId())) {
+            mapMealDB.put(meal.getId(), meal);
+        }
         return meal;
     }
 
     @Override
     public void delete(Integer id) {
         mapMealDB.remove(id);
+    }
+    private int getCount(){
+        return count.addAndGet(1);
     }
 }
