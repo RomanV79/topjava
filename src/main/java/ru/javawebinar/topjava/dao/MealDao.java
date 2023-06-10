@@ -17,7 +17,7 @@ public class MealDao implements Dao<Meal> {
 
     static {
         MealDao mealDao = new MealDao();
-        Meal meal1= new  Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
+        Meal meal1 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
         Meal meal2 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000);
         Meal meal3 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500);
         Meal meal4 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100);
@@ -32,6 +32,7 @@ public class MealDao implements Dao<Meal> {
         mealDao.create(meal6);
         mealDao.create(meal7);
     }
+
     @Override
     public Meal create(Meal meal) {
         int id = getCount();
@@ -52,9 +53,7 @@ public class MealDao implements Dao<Meal> {
 
     @Override
     public Meal update(Meal meal) {
-        if (mapMealDB.containsKey(meal.getId())) {
-            mapMealDB.put(meal.getId(), meal);
-        }
+        mapMealDB.computeIfPresent(meal.getId(), (k, v) -> meal);
         return meal;
     }
 
@@ -62,7 +61,8 @@ public class MealDao implements Dao<Meal> {
     public void delete(Integer id) {
         mapMealDB.remove(id);
     }
-    private int getCount(){
+
+    private int getCount() {
         return count.addAndGet(1);
     }
 }
