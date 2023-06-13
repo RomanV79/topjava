@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +32,7 @@ public class InMemoryUserRepository implements UserRepository {
             repository.put(user.getId(), user);
             return user;
         }
-        return repository.computeIfPresent(user.getId(), (id, oldUser)-> user);
+        return repository.computeIfPresent(user.getId(), (id, oldUser) -> user);
     }
 
     @Override
@@ -46,21 +44,29 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        return repository.values().stream().sorted(Comparator.comparing(user -> user.getName())).collect(Collectors.toList());
+
+        return repository.values().stream()
+                .sorted((user1, user2) -> {
+                    if (!user1.getName().equals(user2.getName()))
+                        return user1.getName().compareTo(user2.getName());
+                    else
+                        return user1.getEmail().compareTo(user2.getEmail());
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public User getByEmail(String email) {
         log.info("getByEmail {}", email);
         User requareUser = null;
-        for (Map.Entry<Integer, User> user:repository.entrySet()) {
-            if (user.getValue().getEmail().equals(email)){
-                requareUser = (User) user;
+        for (User user : repository.values()) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                requareUser = user;
             }
         }
         return requareUser;
 
-        // не уверен что такой stream верен, поэтому обернул в коммент
-//        User requareUser = repository.values().stream().filter(user -> user.getEmail().equals(email)).collect(Collectors.toList()).get(0);
+        // не уверен что такой stream верен, поэтому обернул в коммент--- .findfirst(), верно?
+//        User requareUser = repository.values().stream().filter(user -> user.getEmail().equals(email)).findFirst();
     }
 }
