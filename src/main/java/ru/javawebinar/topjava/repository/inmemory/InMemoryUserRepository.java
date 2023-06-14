@@ -43,14 +43,14 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        Comparator<User> userNameEmailCompare = Comparator.comparing(User::getName).thenComparing(User::getEmail);
-        return repository.values().stream().sorted(userNameEmailCompare).collect(Collectors.toList());
+        Comparator<User> getUserNameEmailCompare = Comparator.comparing(User::getName).thenComparing(User::getEmail);
+        return repository.values().stream().sorted(getUserNameEmailCompare).collect(Collectors.toList());
     }
 
     @Override
     public User getByEmail(String email) {
         log.info("getByEmail {}", email);
-        return repository.values().stream().filter(user -> user.getEmail().equals(email)).findFirst().get();
+        return repository.values().stream().filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
 
 /*         через цикл
               for (User user : repository.values()) {
