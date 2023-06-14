@@ -6,8 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -44,29 +43,20 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-
-        return repository.values().stream()
-                .sorted((user1, user2) -> {
-                    if (!user1.getName().equals(user2.getName()))
-                        return user1.getName().compareTo(user2.getName());
-                    else
-                        return user1.getEmail().compareTo(user2.getEmail());
-                })
-                .collect(Collectors.toList());
+        Comparator<User> userNameEmailCompare = Comparator.comparing(User::getName).thenComparing(User::getEmail);
+        return repository.values().stream().sorted(userNameEmailCompare).collect(Collectors.toList());
     }
 
     @Override
     public User getByEmail(String email) {
         log.info("getByEmail {}", email);
-        User requareUser = null;
-        for (User user : repository.values()) {
+        return repository.values().stream().filter(user -> user.getEmail().equals(email)).findFirst().get();
+
+/*         через цикл
+              for (User user : repository.values()) {
             if (user.getEmail().equalsIgnoreCase(email)) {
                 requareUser = user;
             }
-        }
-        return requareUser;
-
-        // не уверен что такой stream верен, поэтому обернул в коммент--- .findfirst(), верно?
-//        User requareUser = repository.values().stream().filter(user -> user.getEmail().equals(email)).findFirst();
+        }*/
     }
 }
