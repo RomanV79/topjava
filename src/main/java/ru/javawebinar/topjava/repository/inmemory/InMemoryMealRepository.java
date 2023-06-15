@@ -28,32 +28,32 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Meal save(int userId, Meal meal) {
         log.info("userId {}: save {}", userId, meal);
-        repository.computeIfAbsent(userId, k -> new ConcurrentHashMap<>());
+        Map<Integer, Meal> mealBasket = repository.computeIfAbsent(userId, k -> new ConcurrentHashMap<>());
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             repository.get(userId).put(meal.getId(), meal);
             return meal;
         }
         // handle case: update, but not present in storage
-        return repository.get(userId).computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        return mealBasket.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
     @Override
     public boolean delete(int userId, int id) {
-        repository.computeIfAbsent(userId, k -> new ConcurrentHashMap<>());
-        return repository.get(userId).remove(id) != null;
+        Map<Integer, Meal> mealBasket = repository.computeIfAbsent(userId, k -> new ConcurrentHashMap<>());
+        return mealBasket.remove(id) != null;
     }
 
     @Override
     public Meal get(int userId, int id) {
-        repository.computeIfAbsent(userId, k -> new ConcurrentHashMap<>());
-        return repository.get(userId).get(id);
+        Map<Integer, Meal> mealBasket = repository.computeIfAbsent(userId, k -> new ConcurrentHashMap<>());
+        return mealBasket.get(id);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        repository.computeIfAbsent(userId, k -> new ConcurrentHashMap<>());
-        return repository.get(userId).values().stream()
+        Map<Integer, Meal> mealBasket = repository.computeIfAbsent(userId, k -> new ConcurrentHashMap<>());
+        return mealBasket.values().stream()
                 .sorted(Comparator.comparing(Meal::getDate).reversed())
                 .collect(Collectors.toList());
     }
