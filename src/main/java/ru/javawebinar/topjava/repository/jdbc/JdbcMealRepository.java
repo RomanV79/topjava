@@ -48,7 +48,7 @@ public class JdbcMealRepository implements MealRepository {
                         "date_time=:date_time, " +
                         "description=:description, " +
                         "calories=:calories " +
-                        "WHERE id=:id", map) == 0) {
+                        "WHERE id=:id AND user_id=:user_id", map) == 0) {
             return null;
         }
         return meal;
