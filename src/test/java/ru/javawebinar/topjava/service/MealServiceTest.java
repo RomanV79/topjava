@@ -77,11 +77,9 @@ public class MealServiceTest {
     @Test
     public void update() {
         Meal updated = getUpdatedMeal();
-        updated.setId(USER_MEAL_ID);
         mealService.update(updated, USER_ID);
 
         Meal expected = getUpdatedMeal();
-        expected.setId(USER_MEAL_ID);
 
         assertMatch(mealService.get(USER_MEAL_ID, USER_ID), expected);
     }
