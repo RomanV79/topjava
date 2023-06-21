@@ -37,7 +37,7 @@ public class MealServiceTest {
     @Test
     public void get() {
         Meal actual = mealService.get(USER_MEAL_ID, USER_ID);
-        Meal expected = mealUser1;
+        Meal expected = userMeal1;
 
         assertMatch(actual, expected);
     }
@@ -50,29 +50,25 @@ public class MealServiceTest {
 
     @Test
     public void getBetweenInclusive() {
-        List<Meal> actual = new ArrayList<>();
-        actual.add(mealUser3);
-        actual.add(mealUser2);
-        actual.add(mealUser1);
+        List<Meal> expected = Arrays.asList(userMeal3, userMeal2, userMeal1);
 
         LocalDate startDate = LocalDate.of(2020, Month.JANUARY, 30);
         LocalDate endDate = LocalDate.of(2020, Month.JANUARY, 30);
-
-        List<Meal> expected = mealService.getBetweenInclusive(startDate, endDate, USER_ID);
+        List<Meal> actual = mealService.getBetweenInclusive(startDate, endDate, USER_ID);
 
         assertMatch(actual, expected);
     }
 
     @Test
     public void getMealFilterNullBorder() {
-        List<Meal> expected = Arrays.asList(mealUser7, mealUser6, mealUser5, mealUser4, mealUser3, mealUser2, mealUser1);
+        List<Meal> expected = Arrays.asList(userMeal7, userMeal6, userMeal5, userMeal4, userMeal3, userMeal2, userMeal1);
 
         assertMatch(mealService.getBetweenInclusive(null, null, USER_ID), expected);
     }
 
     @Test
     public void getAll() {
-        List<Meal> expected = Arrays.asList(mealUser7, mealUser6, mealUser5, mealUser4, mealUser3, mealUser2, mealUser1);
+        List<Meal> expected = Arrays.asList(userMeal7, userMeal6, userMeal5, userMeal4, userMeal3, userMeal2, userMeal1);
         List<Meal> actual = mealService.getAll(USER_ID);
 
         assertMatch(actual, expected);
@@ -80,11 +76,14 @@ public class MealServiceTest {
 
     @Test
     public void update() {
-        Meal updated = updatedMeal;
+        Meal updated = getUpdatedMeal();
         updated.setId(USER_MEAL_ID);
         mealService.update(updated, USER_ID);
 
-        assertMatch(mealService.get(USER_MEAL_ID, USER_ID), updatedMeal);
+        Meal expected = getUpdatedMeal();
+        expected.setId(USER_MEAL_ID);
+
+        assertMatch(mealService.get(USER_MEAL_ID, USER_ID), expected);
     }
 
     @Test
@@ -101,7 +100,7 @@ public class MealServiceTest {
 
     @Test
     public void createDuplicateDateTime() {
-        assertThrows(DuplicateKeyException.class, () -> mealService.create(new Meal(mealUser1.getDateTime(), "Завтрак дубль", 511), USER_ID));
+        assertThrows(DuplicateKeyException.class, () -> mealService.create(new Meal(userMeal1.getDateTime(), "Завтрак дубль", 511), USER_ID));
     }
 
     // -------------- alien meal test -------------
