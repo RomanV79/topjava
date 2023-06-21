@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertThrows;
@@ -36,8 +37,8 @@ public class MealServiceTest {
     @Test
     public void get() {
         Meal actual = mealService.get(USER_MEAL_ID, USER_ID);
-        Meal expected = meal_1;
-        expected.setId(USER_MEAL_ID);
+        Meal expected = mealUser1;
+
         assertMatch(actual, expected);
     }
 
@@ -50,9 +51,9 @@ public class MealServiceTest {
     @Test
     public void getBetweenInclusive() {
         List<Meal> actual = new ArrayList<>();
-        actual.add(meal_3);
-        actual.add(meal_2);
-        actual.add(meal_1);
+        actual.add(mealUser3);
+        actual.add(mealUser2);
+        actual.add(mealUser1);
 
         LocalDate startDate = LocalDate.of(2020, Month.JANUARY, 30);
         LocalDate endDate = LocalDate.of(2020, Month.JANUARY, 30);
@@ -64,21 +65,15 @@ public class MealServiceTest {
 
     @Test
     public void getMealFilterNullBorder() {
-        assertMatch(mealService.getBetweenInclusive(null, null, USER_ID), mealService.getAll(USER_ID));
+        List<Meal> expected = Arrays.asList(mealUser7, mealUser6, mealUser5, mealUser4, mealUser3, mealUser2, mealUser1);
+
+        assertMatch(mealService.getBetweenInclusive(null, null, USER_ID), expected);
     }
 
     @Test
     public void getAll() {
-        List<Meal> actual = new ArrayList<>();
-        actual.add(meal_7);
-        actual.add(meal_6);
-        actual.add(meal_5);
-        actual.add(meal_4);
-        actual.add(meal_3);
-        actual.add(meal_2);
-        actual.add(meal_1);
-
-        List<Meal> expected = mealService.getAll(USER_ID);
+        List<Meal> expected = Arrays.asList(mealUser7, mealUser6, mealUser5, mealUser4, mealUser3, mealUser2, mealUser1);
+        List<Meal> actual = mealService.getAll(USER_ID);
 
         assertMatch(actual, expected);
     }
@@ -89,7 +84,7 @@ public class MealServiceTest {
         updated.setId(USER_MEAL_ID);
         mealService.update(updated, USER_ID);
 
-        assertMatch(mealService.get(USER_MEAL_ID, USER_ID), updated);
+        assertMatch(mealService.get(USER_MEAL_ID, USER_ID), updatedMeal);
     }
 
     @Test
@@ -106,7 +101,7 @@ public class MealServiceTest {
 
     @Test
     public void createDuplicateDateTime() {
-        assertThrows(DuplicateKeyException.class, () -> mealService.create(duplicateDateTimeMeal, USER_ID));
+        assertThrows(DuplicateKeyException.class, () -> mealService.create(new Meal(mealUser1.getDateTime(), "Завтрак дубль", 511), USER_ID));
     }
 
     // -------------- alien meal test -------------
@@ -128,12 +123,12 @@ public class MealServiceTest {
     }
 
     @Test
-    public void getMealFakeId() {
-        assertThrows(NotFoundException.class, () -> mealService.get(100100, USER_ID));
+    public void getWithFakeId() {
+        assertThrows(NotFoundException.class, () -> mealService.get(FAKE_ID, USER_ID));
     }
 
     @Test
-    public void deleteMealFakeId() {
-        assertThrows(NotFoundException.class, () -> mealService.delete(100100, USER_ID));
+    public void deleteWithFakeId() {
+        assertThrows(NotFoundException.class, () -> mealService.delete(FAKE_ID, USER_ID));
     }
 }
